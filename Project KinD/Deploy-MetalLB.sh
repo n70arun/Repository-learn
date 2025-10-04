@@ -19,6 +19,8 @@ kubectl delete namespace $METALLB_NAMESPACE --ignore-not-found=true
 # -----------------------------
 echo "Creating namespace $METALLB_NAMESPACE..."
 kubectl create namespace $METALLB_NAMESPACE --dry-run=client -o yaml | kubectl apply -f -
+kubectl wait --for=condition=Established namespace/$METALLB_NAMESPACE --timeout=30s
+
 
 # -----------------------------
 # 3️⃣ Create memberlist secret

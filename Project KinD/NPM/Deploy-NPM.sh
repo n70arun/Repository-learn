@@ -28,3 +28,18 @@ kubectl apply -f Npm-services.yaml -n $NAMESPACE
 
 # Start port-forward to Admin UI
 #kubectl port-forward -n $NAMESPACE svc/npm-app 30081:81
+
+
+echo "Dont forget to publish secrets and config maps using the below command"
+echo "/n"
+echo 'cat /Users/arun/Desktop/*env | ssh n70arun@pandora "kubectl create secret generic npm-secrets --from-env-file=/dev/stdin -n npm --dry-run=client -o yaml | kubectl apply -f -"'
+echo "/n"
+echo 'cat /Users/arun/Desktop/*env | ssh n70arun@pandora "kubectl create configmap npm-config --from-env-file=/dev/stdin -n npm --dry-run=client -o yaml | kubectl apply -f -"'
+echo "once done restart the Npm deployment using the below command"
+echo "/n"
+echo 'ssh n70arun@pandora "kubectl rollout restart deployment/npm-db -n npm && kubectl rollout restart deployment/npm-app -n npm"'
+echo "/n"
+echo "Restart Pods"
+echo "/n"
+echo 'kubectl rollout restart deployment npm-app -n npm
+kubectl rollout restart deployment npm-db -n npm
