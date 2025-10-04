@@ -1,4 +1,3 @@
-#
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -7,3 +6,9 @@ metadata:
 spec:
   addresses:
   - 192.168.0.240-192.168.0.250
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2-advertisement
+  namespace: metallb-system
