@@ -12,7 +12,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 env_file="$env_path/$1"
-manifest_file="${1/.env/.yaml}"
+manifest_file="${1%.env}.yaml"
 
 # Resolve script directory and move to manifests
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
