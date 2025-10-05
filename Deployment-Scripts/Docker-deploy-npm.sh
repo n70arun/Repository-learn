@@ -1,2 +1,2 @@
 set -e
-sh Docker-deploy.sh npm.env
+sh -x Docker-deploy.sh npm.env
