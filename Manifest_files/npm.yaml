@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   app:
     image: 'jc21/nginx-proxy-manager:latest'
@@ -17,6 +19,9 @@ services:
       - ./letsencrypt:/etc/letsencrypt
     depends_on:
       - db
+    networks:
+      - default
+      - kind
 
   db:
     image: 'jc21/mariadb-aria:latest'
@@ -29,3 +34,11 @@ services:
       MARIADB_AUTO_UPGRADE: '1'
     volumes:
       - ./mysql:/var/lib/mysql
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
+  kind:
+    external: true
