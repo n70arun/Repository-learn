@@ -1,2 +1,2 @@
 set -e
-bash -x KinD-deploy.sh npm.env
+bash -x KinD-Deploy.sh npm.env
