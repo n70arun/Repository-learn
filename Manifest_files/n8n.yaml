@@ -1,35 +1,43 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: n8n
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: n8n
-  template:
-    metadata:
-      labels:
-        app: n8n
-    spec:
-      containers:
-        - name: n8n
-          image: n8nio/n8n:latest
-          ports:
-            - containerPort: 5678
-          envFrom:
-            - secretRef:
-                name: n8n-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: n8n-service
-spec:
-  selector:
-    app: n8n
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5678
-  type: LoadBalancer   # or NodePort if you prefer
+version: "3.8"
+
+services:
+  n8n-db:
+    image: postgres:15
+    container_name: n8n-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${N8N_DB_POSTGRESDB_DATABASE}
+      POSTGRES_USER: ${N8N_DB_POSTGRESDB_USER}
+      POSTGRES_PASSWORD: ${N8N_DB_POSTGRESDB_PASSWORD}
+    volumes:
+      - ./n8n-db-data:/var/lib/postgresql/data
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    depends_on:
+      - n8n-db
+    ports:
+      - "5678:5678"
+    volumes:
+      - ./n8n/.n8n:/home/node/.n8n
+    environment:
+      # Database
+      - N8N_DATABASE_TYPE=postgresdb
+      - N8N_DB_POSTGRESDB_HOST=${N8N_DB_POSTGRESDB_HOST}
+      - N8N_DB_POSTGRESDB_PORT=${N8N_DB_POSTGRESDB_PORT}
+      - N8N_DB_POSTGRESDB_DATABASE=${N8N_DB_POSTGRESDB_DATABASE}
+      - N8N_DB_POSTGRESDB_USER=${N8N_DB_POSTGRESDB_USER}
+      - N8N_DB_POSTGRESDB_PASSWORD=${N8N_DB_POSTGRESDB_PASSWORD}
+
+      # Basic Auth
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE}
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
+
+      # Server settings
+      - N8N_HOST=${N8N_HOST}
+      - N8N_PORT=${N8N_PORT}
+      - N8N_PROTOCOL=${N8N_PROTOCOL}
+      - NODE_ENV=${NODE_ENV}

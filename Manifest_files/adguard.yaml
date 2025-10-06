@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  adguard:
+    image: adguard/adguardhome:latest
+    container_name: adguard
+    restart: unless-stopped
+    network_mode: "host"  # allows LAN devices to reach DNS directly
+    volumes:
+      - /srv/adguard/work:/opt/adguardhome/work
+      - /srv/adguard/conf:/opt/adguardhome/conf
+    environment:
+      - TZ=Europe/London
