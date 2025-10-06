@@ -13,4 +13,5 @@ services:
       - "5901:5901"   # VNC access
       - "6080:6080"   # noVNC web client
     volumes:
-      - ./data:/home/developer        # persistent SweetHome3D data
+  - /home/n70arun/SweetHomeData:/home/developer
+
