@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  sweethome3d:
+    image: sassmann/debian-sweethome3d:latest
+    container_name: sweethome3d
+    restart: unless-stopped
+    ports:
+      - "5901:5901"   # VNC access
+      - "6080:6080"   # noVNC web client (if supported by the image)
+    env_file:
+      - .env
+    volumes:
+      - ./data:/home/developer        # persistent SweetHome3D data
+      - /tmp/.X11-unix:/tmp/.X11-unix # for X11 forwarding (optional if using VNC)
