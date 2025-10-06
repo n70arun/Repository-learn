@@ -1,2 +1,2 @@
 set -e
-bash -x Docker-deploy.sh npm.env
+bash -x Docker-deploy.sh SweetHome.env
