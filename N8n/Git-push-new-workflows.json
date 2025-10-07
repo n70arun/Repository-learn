@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-10-07T06:26:41.212Z",
-  "updatedAt": "2025-10-07T18:53:29.000Z",
+  "updatedAt": "2025-10-07T19:40:21.000Z",
   "id": "zRxTDArAoTD7sZDt",
   "name": "Git-push-new-workflows",
   "active": true,
@@ -11,7 +11,7 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        304,
+        208,
         -240
       ],
       "id": "445075d8-6045-49aa-b734-e3370573040a",
@@ -25,8 +25,8 @@
       "type": "n8n-nodes-base.n8n",
       "typeVersion": 1,
       "position": [
-        624,
-        0
+        432,
+        -144
       ],
       "id": "846c899b-a6e5-4ae7-93db-40a8de560842",
       "name": "Get many workflows",
@@ -36,39 +36,6 @@
           "name": "n8n account"
         }
       }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "bc6a2934-0226-4e80-a7c1-a5c740cfca29",
-              "leftValue": "={{ $json.createdAt }}",
-              "rightValue": "={{ new Date(Date.now() - (1.5 * 60 * 60 * 1000)) }}\n",
-              "operator": {
-                "type": "dateTime",
-                "operation": "afterOrEquals"
-              }
-            }
-          ],
-          "combinator": "or"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        1040,
-        0
-      ],
-      "id": "baa107b2-bd41-4143-a611-5833e1d6a47d",
-      "name": "If"
     },
     {
       "parameters": {
@@ -90,8 +57,8 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        1248,
-        -96
+        880,
+        -240
       ],
       "id": "42079719-54fe-4954-ad0b-a0288af3b321",
       "name": "Create a file",
@@ -117,56 +84,110 @@
       "typeVersion": 1.2,
       "position": [
         208,
-        0
+        -48
       ],
       "id": "cd68effc-7fef-4641-b692-f6683459686b",
       "name": "Schedule Trigger"
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "58bafffc-8320-43e4-8cc7-86aad1d0aa2e",
-              "leftValue": "={{ $json.updatedAt }}",
-              "rightValue": "={{ new Date(Date.now() - (1.5 * 60 * 60 * 1000)) }}\n",
-              "operator": {
-                "type": "dateTime",
-                "operation": "afterOrEquals"
-              }
-            }
-          ],
-          "combinator": "and"
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "n70arun",
+          "mode": "name"
         },
-        "options": {}
+        "repository": {
+          "__rl": true,
+          "value": "https://github.com/n70arun/Repository-learn",
+          "mode": "url"
+        },
+        "filePath": "={{\"N8n/\" + $json.name + \".json\"}}",
+        "fileContent": "={{ JSON.stringify($json, null, 2) }}",
+        "commitMessage": "={{ \"Updating \" + $json.name }}"
       },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
       "position": [
-        1248,
-        96
+        880,
+        -48
       ],
-      "id": "fe2937ca-c8bb-42f0-a650-0481efa5728e",
-      "name": "If1"
+      "id": "ac60d9f3-19d1-4a7c-9aae-890c30108c29",
+      "name": "Edit a file",
+      "webhookId": "dd7203e7-e92a-4fdf-bfe1-2bd91b9545f5",
+      "credentials": {
+        "githubApi": {
+          "id": "kyhWlbwAWN7J7ggO",
+          "name": "GitHub account"
+        }
+      }
     },
     {
       "parameters": {
-        "jsCode": "// Get current time\nconst now = new Date();\n\n// Define 1.5 hours in milliseconds\nconst v_time = 1.5 * 60 * 60 * 1000;\n\n// Filter items updated within last 1.5 hours\nconst recentItems = items.filter(item => {\n  const updatedAt = new Date(item.json.updatedAt);\n  return now - updatedAt <= v_time;\n});\n\n// Map to return only workflow_id and workflow_name\nreturn recentItems.map(item => {\n  return {\n    json: {\n      workflow_id: item.json.id,\n      workflow_name: item.json.name,\n      updatedAt: item.json.updatedAt\n    }\n  };\n});\n"
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() }}\n",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "7b052ad4-f457-4b82-bea5-594a23153c9f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "New"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "77471518-164a-48b6-9e08-3ba46ceb9732",
+                    "leftValue": "={{ new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() }}\n",
+                    "rightValue": "=false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Update"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
       },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
       "position": [
-        832,
-        0
+        656,
+        -144
       ],
-      "id": "5b3a8f80-87ac-429b-9bed-5afcc8ec0250",
-      "name": "Code in JavaScript"
+      "id": "d0fce673-dbdc-412b-a269-283367358df6",
+      "name": "Switch"
     }
   ],
   "connections": {
@@ -185,25 +206,7 @@
       "main": [
         [
           {
-            "node": "Code in JavaScript",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "Create a file",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "If1",
+            "node": "Switch",
             "type": "main",
             "index": 0
           }
@@ -221,11 +224,18 @@
         ]
       ]
     },
-    "Code in JavaScript": {
+    "Switch": {
       "main": [
         [
           {
-            "node": "If",
+            "node": "Create a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit a file",
             "type": "main",
             "index": 0
           }
@@ -245,7 +255,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "3bbc9a8e-ad41-43fe-b0e0-da1028ceebf4",
+  "versionId": "a5c73670-75b9-4595-a7d8-375892879c31",
   "triggerCount": 1,
   "shared": [
     {
