@@ -1,0 +1,86 @@
+{
+  "createdAt": "2025-10-07T18:23:06.854Z",
+  "updatedAt": "2025-10-07T18:23:06.854Z",
+  "id": "b1JUCYMSNm8zmGOr",
+  "name": "Get-n8n-json",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f4b8a271-c1f6-48e8-9a15-6ff51237f8bf",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "list",
+        "owner": {
+          "__rl": true,
+          "value": "n70arun",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "Repository-learn",
+          "mode": "name"
+        },
+        "filePath": "=${{ json.name }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "38e54b8e-73ca-4a87-827f-25fac8012f29",
+      "name": "List files",
+      "webhookId": "f8ec6c61-190b-49ab-95fe-69e657e4b774",
+      "credentials": {
+        "githubApi": {
+          "id": "kyhWlbwAWN7J7ggO",
+          "name": "GitHub account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "List files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "69004f8b-a044-4893-9e2b-20a33eb65bb1",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-07T18:23:06.858Z",
+      "updatedAt": "2025-10-07T18:23:06.858Z",
+      "role": "workflow:owner",
+      "workflowId": "b1JUCYMSNm8zmGOr",
+      "projectId": "FI2Vem6GWSxajvuY"
+    }
+  ],
+  "tags": []
+}
