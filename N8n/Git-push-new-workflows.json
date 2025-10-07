@@ -1,0 +1,162 @@
+{
+  "createdAt": "2025-10-07T06:26:41.212Z",
+  "updatedAt": "2025-10-07T06:54:55.000Z",
+  "id": "zRxTDArAoTD7sZDt",
+  "name": "Git-push-new-workflows",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "445075d8-6045-49aa-b734-e3370573040a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "846c899b-a6e5-4ae7-93db-40a8de560842",
+      "name": "Get many workflows",
+      "credentials": {
+        "n8nApi": {
+          "id": "lFnLWR5AUb6JBJXn",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bc6a2934-0226-4e80-a7c1-a5c740cfca29",
+              "leftValue": "={{ $json.createdAt }}",
+              "rightValue": "={{ new Date(Date.now() - (1.5 * 60 * 60 * 1000)) }}\n",
+              "operator": {
+                "type": "dateTime",
+                "operation": "afterOrEquals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "baa107b2-bd41-4143-a611-5833e1d6a47d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "n70arun",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "https://github.com/n70arun/Repository-learn",
+          "mode": "url"
+        },
+        "filePath": "=\"N8n\"\\{{ $json.name }}",
+        "fileContent": "={{ $json }}",
+        "commitMessage": "asdasd"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "42079719-54fe-4954-ad0b-a0288af3b321",
+      "name": "Create a file",
+      "webhookId": "6b1e97a6-6bdd-4105-a2ff-e92fc76d848e",
+      "credentials": {
+        "githubApi": {
+          "id": "kyhWlbwAWN7J7ggO",
+          "name": "GitHub account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many workflows": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "2f4971f4-cdab-45bb-bf88-f2b7b2f849c3",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-07T06:26:41.224Z",
+      "updatedAt": "2025-10-07T06:26:41.224Z",
+      "role": "workflow:owner",
+      "workflowId": "zRxTDArAoTD7sZDt",
+      "projectId": "FI2Vem6GWSxajvuY"
+    }
+  ],
+  "tags": []
+}
