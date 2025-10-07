@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-10-07T06:26:41.212Z",
-  "updatedAt": "2025-10-07T06:54:55.000Z",
+  "updatedAt": "2025-10-07T18:53:29.000Z",
   "id": "zRxTDArAoTD7sZDt",
   "name": "Git-push-new-workflows",
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -11,8 +11,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        304,
+        -240
       ],
       "id": "445075d8-6045-49aa-b734-e3370573040a",
       "name": "When clicking ‘Execute workflow’"
@@ -25,7 +25,7 @@
       "type": "n8n-nodes-base.n8n",
       "typeVersion": 1,
       "position": [
-        208,
+        624,
         0
       ],
       "id": "846c899b-a6e5-4ae7-93db-40a8de560842",
@@ -64,7 +64,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        416,
+        1040,
         0
       ],
       "id": "baa107b2-bd41-4143-a611-5833e1d6a47d",
@@ -83,14 +83,14 @@
           "value": "https://github.com/n70arun/Repository-learn",
           "mode": "url"
         },
-        "filePath": "=\"N8n\"\\{{ $json.name }}",
-        "fileContent": "={{ $json }}",
-        "commitMessage": "asdasd"
+        "filePath": "=N8n/{{ $json.name }}.json",
+        "fileContent": "={{ JSON.stringify($json, null, 2) }}",
+        "commitMessage": "=adding {{ $json.name }}"
       },
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        624,
+        1248,
         -96
       ],
       "id": "42079719-54fe-4954-ad0b-a0288af3b321",
@@ -102,6 +102,71 @@
           "name": "GitHub account"
         }
       }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "cd68effc-7fef-4641-b692-f6683459686b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "58bafffc-8320-43e4-8cc7-86aad1d0aa2e",
+              "leftValue": "={{ $json.updatedAt }}",
+              "rightValue": "={{ new Date(Date.now() - (1.5 * 60 * 60 * 1000)) }}\n",
+              "operator": {
+                "type": "dateTime",
+                "operation": "afterOrEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        96
+      ],
+      "id": "fe2937ca-c8bb-42f0-a650-0481efa5728e",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get current time\nconst now = new Date();\n\n// Define 1.5 hours in milliseconds\nconst v_time = 1.5 * 60 * 60 * 1000;\n\n// Filter items updated within last 1.5 hours\nconst recentItems = items.filter(item => {\n  const updatedAt = new Date(item.json.updatedAt);\n  return now - updatedAt <= v_time;\n});\n\n// Map to return only workflow_id and workflow_name\nreturn recentItems.map(item => {\n  return {\n    json: {\n      workflow_id: item.json.id,\n      workflow_name: item.json.name,\n      updatedAt: item.json.updatedAt\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        0
+      ],
+      "id": "5b3a8f80-87ac-429b-9bed-5afcc8ec0250",
+      "name": "Code in JavaScript"
     }
   ],
   "connections": {
@@ -120,7 +185,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
@@ -135,6 +200,35 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     }
@@ -142,13 +236,17 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "2f4971f4-cdab-45bb-bf88-f2b7b2f849c3",
-  "triggerCount": 0,
+  "versionId": "3bbc9a8e-ad41-43fe-b0e0-da1028ceebf4",
+  "triggerCount": 1,
   "shared": [
     {
       "createdAt": "2025-10-07T06:26:41.224Z",
