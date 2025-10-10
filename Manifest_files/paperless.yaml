@@ -59,6 +59,7 @@ services:
     ports:
       - "3001:3001"
 
+  #
   # ollama:
   #   image: ollama/ollama:latest
   #   container_name: ollama
