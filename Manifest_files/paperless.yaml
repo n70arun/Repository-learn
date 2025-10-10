@@ -47,27 +47,17 @@ services:
     restart: unless-stopped
     depends_on:
       - paperless-ngx
-      - ollama
     environment:
       PAPERLESS_URL: http://paperless-ngx:8000
       PAPERLESS_TOKEN: ${PAPERLESS_API_TOKEN}
       PAPERLESS_AI_PROVIDER: ollama
-      PAPERLESS_AI_OLLAMA_HOST: http://ollama:11434
+      # On Linux replace with your host IP if host.docker.internal is unavailable
+      PAPERLESS_AI_OLLAMA_HOST: http://host.docker.internal:11434
       PAPERLESS_AI_OLLAMA_MODEL: llama3
     volumes:
       - /srv/paperless/ai:/app/data
     ports:
       - "3001:3001"
-
-  #
-  # ollama:
-  #   image: ollama/ollama:latest
-  #   container_name: ollama
-  #   restart: unless-stopped
-  #   volumes:
-  #     - /srv/paperless/ollama:/root/.ollama
-  #   ports:
-  #     - "11434:11434"
 
 volumes:
   data:
@@ -76,4 +66,3 @@ volumes:
   consume:
   postgres:
   ai:
-  ollama:
