@@ -58,7 +58,7 @@ services:
       - /srv/paperless/ai:/app/data
     ports:
       - "3001:3000"
-
+#
 volumes:
   data:
   media:
