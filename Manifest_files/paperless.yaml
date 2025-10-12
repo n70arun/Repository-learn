@@ -62,9 +62,9 @@ services:
       PAPERLESS_API_TOKEN: ${PAPERLESS_API_TOKEN}
       PAPERLESS_AI_PROVIDER: ollama
       PAPERLESS_AI_OLLAMA_HOST: http://ollama:11434
-      PAPERLESS_AI_OLLAMA_MODEL: phi3:mini
-      PROMPT_TAGS=""
-      RESTRICT_TO_EXISTING_TAGS=no
+      PAPERLESS_AI_OLLAMA_MODEL: phi3:3.8b-mini-4k-instruct-q4_K_M
+      PROMPT_TAGS: ""
+      RESTRICT_TO_EXISTING_TAGS: no
       
     volumes:
       - /srv/paperless/ai:/app/data
