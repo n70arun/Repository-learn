@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-10-07T06:26:41.212Z",
-  "updatedAt": "2025-10-14T19:57:25.000Z",
+  "updatedAt": "2025-10-14T20:04:32.000Z",
   "id": "zRxTDArAoTD7sZDt",
   "name": "Git-push-new-workflows",
   "active": true,
@@ -137,7 +137,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ \n  new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() &&\n  (new Date().getTime() - new Date($json.createdAt).getTime()) < (1.25 * 60 * 60 * 1000)\n}}",
+                    "leftValue": "={{ \n  new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() &&\n  (new Date().getTime() - new Date($json.createdAt).getTime()) < (1 * 60 * 60 * 1000)\n}}\n",
                     "rightValue": "true",
                     "operator": {
                       "type": "string",
@@ -162,7 +162,7 @@
                 "conditions": [
                   {
                     "id": "77471518-164a-48b6-9e08-3ba46ceb9732",
-                    "leftValue": "={{ new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() }}\n",
+                    "leftValue": "={{ \n  new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() &&\n  (new Date().getTime() - new Date($json.updatedAt).getTime()) > (1 * 60 * 60 * 1000)\n}}\n",
                     "rightValue": "=false",
                     "operator": {
                       "type": "string",
@@ -186,7 +186,7 @@
                 "conditions": [
                   {
                     "id": "7323b079-acc4-4635-86a4-7adc444f0f58",
-                    "leftValue": "={{    new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() &&   (new Date().getTime() - new Date($json.createdAt).getTime()) < (1.25 * 60 * 60 * 1000) }}",
+                    "leftValue": "={{   (new Date().getTime() - new Date($json.updatedAt).getTime()) < (1 * 60 * 60 * 1000) }}",
                     "rightValue": "false",
                     "operator": {
                       "type": "string",
@@ -281,7 +281,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "cd33dfcf-fa09-41d8-9228-a86d47cd8804",
+  "versionId": "6f3d5472-1c47-4862-bee5-3f22da4fc298",
   "triggerCount": 1,
   "shared": [
     {
