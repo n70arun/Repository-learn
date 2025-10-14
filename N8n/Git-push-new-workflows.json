@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-10-07T06:26:41.212Z",
-  "updatedAt": "2025-10-07T19:40:21.000Z",
+  "updatedAt": "2025-10-14T19:57:25.000Z",
   "id": "zRxTDArAoTD7sZDt",
   "name": "Git-push-new-workflows",
   "active": true,
@@ -25,7 +25,7 @@
       "type": "n8n-nodes-base.n8n",
       "typeVersion": 1,
       "position": [
-        432,
+        640,
         -144
       ],
       "id": "846c899b-a6e5-4ae7-93db-40a8de560842",
@@ -57,7 +57,7 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        880,
+        1088,
         -240
       ],
       "id": "42079719-54fe-4954-ad0b-a0288af3b321",
@@ -110,7 +110,7 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        880,
+        1088,
         -48
       ],
       "id": "ac60d9f3-19d1-4a7c-9aae-890c30108c29",
@@ -137,7 +137,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() }}\n",
+                    "leftValue": "={{ \n  new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() &&\n  (new Date().getTime() - new Date($json.createdAt).getTime()) < (1.25 * 60 * 60 * 1000)\n}}",
                     "rightValue": "true",
                     "operator": {
                       "type": "string",
@@ -174,6 +174,31 @@
               },
               "renameOutput": true,
               "outputKey": "Update"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7323b079-acc4-4635-86a4-7adc444f0f58",
+                    "leftValue": "={{    new Date($json.updatedAt).getTime() === new Date($json.createdAt).getTime() &&   (new Date().getTime() - new Date($json.createdAt).getTime()) < (1.25 * 60 * 60 * 1000) }}",
+                    "rightValue": "false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "NO ACTION"
             }
           ]
         },
@@ -183,7 +208,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        656,
+        864,
         -144
       ],
       "id": "d0fce673-dbdc-412b-a269-283367358df6",
@@ -239,7 +264,8 @@
             "type": "main",
             "index": 0
           }
-        ]
+        ],
+        []
       ]
     }
   },
@@ -255,7 +281,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "a5c73670-75b9-4595-a7d8-375892879c31",
+  "versionId": "cd33dfcf-fa09-41d8-9228-a86d47cd8804",
   "triggerCount": 1,
   "shared": [
     {
